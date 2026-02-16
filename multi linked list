@@ -1,0 +1,119 @@
+#include <iostream>
+using namespace std;
+struct SNode
+{
+int SNo;
+SNode*Snext;
+
+};
+ struct CNode
+ {
+int CNo;
+CNode*Cnext;
+SNode*stulist;
+};
+CNode*Clist=NULL;
+
+void insert_Course(int No){
+    int CNo;
+    CNode*temp;
+
+temp=(CNode*)malloc(sizeof (CNode));
+temp->CNo = No;
+temp->Cnext= NULL;
+temp->stulist=NULL;
+if (Clist==NULL)
+  Clist=temp;
+else
+ {CNode*Ccur=Clist; 
+ while (Ccur->Cnext!= NULL)
+
+  Ccur=Ccur->Cnext;
+
+  Ccur->Cnext=temp;
+}}
+void insert_Studentlist(int SNo,int CNo)
+{CNode*Ccur=Clist;
+while (Ccur!=NULL)
+
+{ if (Ccur->CNo==CNo)
+{
+  SNode*temp;
+
+ temp=(SNode*) malloc(sizeof(SNode));
+ temp->SNo=SNo;
+ temp->Snext=NULL;
+ if(Ccur->stulist==NULL)
+{   Ccur->stulist=temp;
+
+}
+else{
+    SNode*Scur=Ccur->stulist;
+    while(Scur->Snext!=NULL)
+      Scur=Scur->Snext;
+      Scur->Snext=temp;
+    
+}
+     return;
+}
+     Ccur=Ccur->Cnext;}
+}
+void Display()
+{
+    CNode*Ccur=Clist;
+    if(Ccur==NULL)
+    {
+        cout<<"list is empty"<<endl;
+        return;
+    }
+    while(Ccur!=NULL)
+    {
+    cout<<"Course NUMBER:"<<Ccur->CNo<<endl;
+   // Ccur=Ccur->Cnext;
+        SNode*Scur=Ccur->stulist;
+    
+    if(Scur==NULL)
+    {
+        cout<<"list is empty"<<endl;
+
+    }else{
+    while(Scur!=NULL)
+    {cout<<"student number:"<<Scur->SNo<<endl;
+    
+        Scur=Scur->Snext;
+    }}
+    Ccur=Ccur->Cnext;
+}
+  } 
+int main ()
+{int choice,No,SNo,CNo;
+while(true){
+    cout<<"ENTER YOUR CHOICE"<<endl;
+    cout<<"1-ADD A COURSE"<<endl;
+    cout<<"2-ADD A STUDENT TO A COURSE"<<endl;
+    cout<<"3-DISPLAY"<<endl;
+    cout<<"4-DELETE A COURSE"<<endl;
+    cout<<"5-SEARCH COURSE"<<endl;
+    cin>>choice;
+    if(choice==1)
+    {
+        cout<<"Enter course number:"<<endl;
+        cin>>CNo;
+        insert_Course(CNo);
+    }
+    if(choice==2)
+    {
+        cout<<"Enter student ID and course number to enroll:"<<endl;
+        cout<<".Enter student ID";
+        cin>>SNo;
+        cout<<"Enter Course number:"<<endl;
+        cin>>CNo;
+        insert_Studentlist(SNo,CNo);
+    }
+    if(choice==3)
+    {
+        Display();
+    }
+}
+    
+}
