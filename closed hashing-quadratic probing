@@ -1,0 +1,61 @@
+#include <iostream>
+#include <cstdlib>  
+using namespace std;
+
+#define SIZE 10
+
+int *HT;   
+
+void insert(int value)
+{
+    int h = value % SIZE;
+    for (int i = 0; i < SIZE; i++)
+    {
+        int ind = (h + i * i) % SIZE;  // quadratic probing formula
+        if (HT[ind] == -1)  // empty slot
+        {
+            HT[ind] = value;
+            cout << "Inserted " << value << " at index " << ind << endl;
+            return;
+        }
+    }
+
+    cout << "Hash Table Full! Cannot insert " << value << endl;
+}
+
+void display()
+{
+    cout << "\nHash Table:\n";
+    for (int i = 0; i < SIZE; i++)
+        cout << i << " : " << HT[i] << endl;
+}
+int main()
+{
+    HT = (int*) malloc(SIZE * sizeof(int));
+    for (int i = 0; i < SIZE; i++)
+        HT[i] = -1;
+    int choice, value;
+   while (true)
+    {
+        cout << "\n1. Insert\n2. Display\n3. Exit\n";
+        cin >> choice;
+
+        if (choice == 1)
+        {
+            cout << "Enter value: ";
+            cin >> value;
+            insert(value);
+        }
+        else if (choice == 2)
+        {
+            display();
+        }
+        else
+        {
+            break;
+        }
+    }
+
+    
+    free(HT);
+}
