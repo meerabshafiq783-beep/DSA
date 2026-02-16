@@ -1,0 +1,68 @@
+#include <iostream>
+
+using namespace std;
+#define size 10
+struct Node
+{
+    int data;
+    Node* next;
+};
+
+Node* HT[size];  
+
+void insert(int value)
+{
+    int ind = value % size;
+//Node*temp=(Node*)malloc(sizeof(Node));
+    Node* temp = new Node;
+    temp->data = value;
+    temp->next = NULL;
+
+    if (HT[ind] == NULL)
+    {
+        HT[ind] = temp;
+    }
+    else
+    {
+        Node* cur = HT[ind];
+
+        while (cur->next != NULL)   // traversing
+        {
+            cur = cur->next;
+        }
+
+        cur->next = temp;
+    }
+
+    cout << "Inserted!" << endl;
+}
+
+void display()
+{
+    for (int i = 0; i < size; i++)
+    {
+        cout << i << " : ";
+
+        Node* cur = HT[i];
+
+        while (cur != NULL)
+        {
+            cout << cur->data << " -> ";
+            cur = cur->next;
+        }
+
+        cout << "NULL" << endl;
+    }
+}
+
+int main()
+{
+    for (int i = 0; i < size; i++)
+        HT[i] = NULL;
+
+    insert(15);
+    insert(25);
+    insert(35);
+
+    display();
+}
