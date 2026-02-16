@@ -1,0 +1,96 @@
+#include <iostream>
+using namespace std;
+
+int *Data;  
+int SIZE;
+int front = -1;
+int rear = -1;
+
+void enqueue(int value) {
+    if ((rear + 1) % SIZE == front) {
+        cout << "Queue is Full\n";
+        return;
+    }
+    if (front == -1) {   // First element
+        front = 0;
+        rear = 0;
+    }
+    else {
+        rear = (rear + 1) % SIZE;
+    }
+    Data[rear] = value;
+    cout << value << " inserted successfully\n";
+}
+
+void dequeue() {
+
+    if (front == -1) {
+        cout << "Queue is Empty\n";
+        return;
+    }
+
+    cout << Data[front] << " removed successfully\n";
+
+    if (front == rear) {   // Only one element
+        front = -1;
+        rear = -1;
+    }
+    else {
+        front = (front + 1) % SIZE;
+    }
+}
+
+void display() {
+
+    if (front == -1) {
+        cout << "Queue is Empty\n";
+        return;
+    }
+
+    cout << "Queue elements: ";
+
+    int i = front;
+    while (true) {
+        cout << Data[i] << " ";
+
+        if (i == rear)
+            break;
+
+        i = (i + 1) % SIZE;
+    }
+
+    cout << endl;
+}
+
+int main(){
+
+    cout << "Enter Queue Size: ";
+    cin >> SIZE;
+
+    Data =(int*)malloc(sizeof(int));
+    int choice, value;
+    while(true){
+        cout << "ENTER CHOICE TO CREATE QUEUE: "<<endl;
+        cout << "1. Enqueue"<<endl;
+        cout << "2. Dequeue"<<endl;
+        cout << "3. Display"<<endl;
+        cout << "4. Exit"<<endl;
+        cout << "Enter your choice: ";
+        cin >> choice;
+
+     if(choice==1) {
+        cout << "Enter value to insert: ";
+        cin >> value;
+        enqueue(value);
+     }
+    if(choice==2){
+        dequeue();
+    }
+    if(choice==3){
+        display();
+}
+    if(choice==3){
+    cout << "Exit program...\n";
+}
+    }
+}
