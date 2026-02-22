@@ -1,0 +1,33 @@
+#include <iostream>
+using namespace std;
+void bubblesort(int input[],int n){
+  for(int i=0;i<n-1;i++)
+{
+    for(int j=0;j<n-i-1;j++)
+    {
+        if(input[j]>input[j+1])
+        {
+         swap(input[j],input[j+1]);
+            
+        }
+    }
+}}
+int main() 
+{   int n;
+    cout<<"enter size of an array:"<<endl;
+    cin>>n;
+    int input[n];
+    cout<<"enter "<< n <<" elements:"<<endl;
+    for(int i=0;i<n;i++)
+    {
+        cin>>input[i];}
+    
+    bubblesort(input,n);
+   cout<<"sorted array through bubble sort"<<endl;
+        for(int i=0;i<n;i++)
+{
+    cout<<input[i]<<" ";
+}
+   return 0; 
+    
+}
