@@ -1,0 +1,75 @@
+#include<iostream>
+
+
+using namespace std;
+
+int arr[5] = {22, 92, 18, 17, 11};
+
+
+int Setpivot(int l, int r)
+{
+	int pivot = (l+r) / 2;
+		
+	while(l<r)
+	{
+		while(pivot != r)
+		{
+			if(arr[pivot] > arr[r])
+			{
+				swap(arr[r],arr[pivot]);
+				pivot = r;
+				break;
+			}
+			else
+				r--;
+			}
+		
+		
+		while(l!=r)
+		{
+			if(arr[pivot]< arr[l])
+			{
+				swap(arr[pivot], arr[l]);
+				pivot = l;
+				break;
+			}
+			else
+				l++;
+			}
+		
+		
+	
+	}
+	return pivot;
+		
+}
+
+
+void Quicksort(int l,int r)
+{
+	if(l<r)
+	{
+		int pivot = Setpivot(l,r); 
+		Quicksort(l, pivot-1);
+		Quicksort(pivot+1, r);
+	}
+}
+
+int main(){
+	
+int l = 0;
+int r = sizeof(arr)/ sizeof(arr[0])-1; 	
+
+Quicksort(l,r);	
+
+cout<<"Sorted array: ";
+
+for(int i=0; i<=r; i++)
+{
+	cout<<arr[i]<<" ";
+}
+
+	
+	
+return 0;
+}
