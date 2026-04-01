@@ -1,0 +1,140 @@
+#include <iostream>
+using namespace std;
+
+struct Node {
+    int data;
+    Node* left;
+    Node* right;
+};
+
+// Global root
+Node* Root = NULL;
+
+Node* insert(Node* curr, int value)
+{
+    if (curr == NULL)
+    {
+        Node* temp = new Node();
+        temp->data = value;
+        temp->left = NULL;
+        temp->right = NULL;
+        return temp;
+    }
+
+    if (value > curr->data)
+        curr->right = insert(curr->right, value);
+    else
+        curr->left = insert(curr->left, value);
+
+    return curr;
+}
+
+void PreOrder(Node* curr)
+{
+    if (curr != NULL)
+    {
+        cout << curr->data << " ";
+        PreOrder(curr->left);
+        PreOrder(curr->right);
+    }
+}
+
+bool Search(Node* curr, int key)
+{
+    if (curr == NULL)
+        return false;
+
+    if (curr->data == key)
+        return true;
+
+    if (key < curr->data)
+        return Search(curr->left, key);
+    else
+        return Search(curr->right, key);
+}
+
+// Find minimum node (used in delete)
+Node* findMin(Node* curr)
+{
+    while (curr->left != NULL)
+        curr = curr->left;
+    return curr;
+}
+
+Node* del_Node(Node* curr, int value)
+{
+    if (curr == NULL)
+    {
+        cout << "Value not found\n";
+        return NULL;
+    }
+
+    if (value < curr->data)
+        curr->left = del_Node(curr->left, value);
+
+    else if (value > curr->data)
+        curr->right = del_Node(curr->right, value);
+
+    else
+    {
+        // Case 1: No child
+        if (curr->left == NULL && curr->right == NULL)
+        {
+            delete curr;
+            return NULL;
+        }
+
+        // Case 2: One child
+        else if (curr->left == NULL)
+        {
+            Node* temp = curr->right;
+            delete curr;
+            return temp;
+        }
+        else if (curr->right == NULL)
+        {
+            Node* temp = curr->left;
+            delete curr;
+            return temp;
+        }
+
+        // Case 3: Two children
+        Node* temp = findMin(curr->right);
+        curr->data = temp->data;
+        curr->right = del_Node(curr->right, temp->data);
+    }
+
+    return curr;
+}
+
+int main()
+{
+    Root = insert(Root, 50);
+    insert(Root, 30);
+    insert(Root, 70);
+    insert(Root, 20);
+    insert(Root, 40);
+    insert(Root, 60);
+    insert(Root, 80);
+
+    cout << "PreOrder Traversal: ";
+    PreOrder(Root);
+
+    int key;
+    cout << "\nEnter value to search: ";
+    cin >> key;
+
+    if (Search(Root, key))
+        cout << "Value found in BST\n";
+    else
+        cout << "Value not found in BST\n";
+
+    Root = del_Node(Root, 60);
+    Root = del_Node(Root, 70);
+    Root = del_Node(Root, 80);
+
+    cout << "PreOrder After Deletion: ";
+    PreOrder(Root);
+
+    return 0;
+}
