@@ -13,13 +13,14 @@ void push(int value)
     top++;
 }
 
-int pop(int value) {
+int pop() {
     if (top == 0) {
         cout << "Stack Underflow" << endl;
         return -1;
     }
-    return stack[top];
     top--;
+    return stack[top];
+    
 }
 
 void display() {
@@ -49,9 +50,13 @@ int main() {
         } 
         if (choice == 2)
         {
-          cout << "Popped: "<< endl;
-          pop(value);
+          cout << "Enter value to Pop: "<< endl;
+          int popped=pop();
+          if(popped!=-1)
+        {
+       cout<<"popped value":<<popped;
         } 
+}
         if (choice == 3) {
             display();
         } 
