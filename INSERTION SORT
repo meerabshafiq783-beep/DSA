@@ -1,7 +1,7 @@
 #include <iostream>
 using namespace std;
 void insertionsort(int input[],int n){
-  for(int i=0;i<n;i++)
+  for(int i=1;i<n;i++)
 { int curr=input[i];
   int prev=i-1;
     while(prev>=0 && input[prev]>curr)
