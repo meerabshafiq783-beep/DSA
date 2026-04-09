@@ -1,0 +1,113 @@
+#include <iostream>
+using namespace std;
+
+struct Node
+{
+    char data;
+    Node* left;
+    Node* right;
+};
+
+Node* stack[100];
+int top = -1;
+
+// PUSH
+void push(Node* x)
+{
+    stack[++top] = x;
+}
+
+Node* pop()
+{
+    return stack[top--];
+}
+
+Node* createNode(char x)
+{
+    Node* temp = new Node;
+    temp->data = x;
+    temp->left = NULL;
+    temp->right = NULL;
+    return temp;
+}
+
+bool isOperator(char ch)
+{
+    return (ch == '+' || ch == '-' || ch == '*' || ch == '/' || ch == '^');
+}
+
+void inorder(Node* root)
+{
+    if(root)
+    {
+        if(isOperator(root->data)) cout << "(";
+        
+        inorder(root->left);
+        cout << root->data;
+        inorder(root->right);
+
+        if(isOperator(root->data)) cout << ")";
+    }
+}
+
+void preorder(Node* root)
+{
+    if(root)
+    {
+        cout << root->data;
+        preorder(root->left);
+        preorder(root->right);
+    }
+}
+
+void postorder(Node* root)
+{
+    if(root)
+    {
+        postorder(root->left);
+        postorder(root->right);
+        cout << root->data;
+    }
+}
+
+int main()
+{
+    char postfix[100];
+    cout << "Enter postfix expression: ";
+    cin >> postfix;
+
+    for(int i = 0; postfix[i] != '\0'; i++)
+    {
+        char ch = postfix[i];
+
+        // If operand
+        if((ch >= 'A' && ch <= 'Z') || (ch >= 'a' && ch <= 'z') || (ch >= '0' && ch <= '9'))
+        {
+            push(createNode(ch));
+        }
+        else
+        {
+            Node* right = pop();
+            Node* left = pop();
+
+            Node* op = createNode(ch);
+            op->left = left;
+            op->right = right;
+
+            push(op);
+        }
+    }
+
+    Node* root = pop();
+
+    cout << "\nInorder (with brackets): ";
+    inorder(root);
+
+    cout << "\nPreorder: ";
+    preorder(root);
+
+    cout << "\nPostorder: ";
+    postorder(root);
+
+    return 0;
+}
