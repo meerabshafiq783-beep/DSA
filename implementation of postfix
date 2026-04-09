@@ -1,0 +1,56 @@
+#include <iostream>
+#include <cmath>
+using namespace std;
+
+int stack[100];
+int top = -1;
+
+void push(int x)
+{
+    stack[++top] = x;
+}
+
+
+int pop()
+{
+    return stack[top--];
+}
+
+int main()
+{
+    char postfix[100];
+    cout << "Enter postfix expression: ";
+    cin >> postfix;
+
+    for(int i = 0; postfix[i] != '\0'; i++)
+    {
+        char ch = postfix[i];
+
+        // If operand (digit)
+        if(ch >= '0' && ch <= '9')
+        {
+            push(ch - '0');  // convert char to int
+        }
+        else
+        {
+            int val2 = pop();
+            int val1 = pop();
+
+            switch(ch)
+            {
+                case '+': push(val1 + val2);          break;
+
+                case '-': push(val1 - val2); break;
+
+                case '*': push(val1 * val2); break;
+
+                case '/': push(val1 / val2); break
+      
+          case '^': push(pow(val1, val2)); break;
+            }
+        }
+    }
+
+    cout << "Result = " << pop();
+    return 0;
+}
