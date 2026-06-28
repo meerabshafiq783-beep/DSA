@@ -1,0 +1,132 @@
+#include<iostream>
+#include<stdio.h>
+ using namespace std;
+ struct node
+ {
+    int data;
+    node*next;
+ };
+    node*list=NULL;
+void insert(int value)
+{
+    node*temp;
+    temp=(node*) malloc(sizeof(node));
+    temp->data=value;
+    temp->next=NULL;
+    if(list==NULL)
+    {
+        list=temp;
+        return;
+    }
+
+    node*cur=list;
+    while(cur->next!=NULL)
+    {
+        cur=cur->next;
+        //cur->next=temp;
+    }
+   cur->next=temp;
+    }
+ void display()
+ {
+    if(list==NULL)
+    {
+        cout<<"list is empty";
+        return;
+    }
+    node*cur=list;
+    while(cur!=NULL)
+       { cout<<cur->data<<endl;
+        cur=cur->next;}
+ }
+ void Delete(int value)
+ {
+     if(list==NULL)
+     {
+         cout<<"list is empty";
+         return;
+     }
+     
+     node*cur=list;
+     if(value==list->data)
+     {
+         list=list->next;
+         delete(cur);
+         return;
+     }
+     else
+     {
+         node*cur=list->next;
+         node*prev=list;
+         while(cur!=NULL)
+         {
+             if(value==cur->data)
+             {
+                 prev->next=cur->next;
+                 delete(cur);
+                 return;
+             }
+             cur=cur->next;
+             prev=prev->next;
+         }
+     }
+         
+     }
+     void search(int value)
+{
+    if(list == NULL)
+    {
+        cout << "List is empty" << endl;
+        return;
+    }
+
+    node* cur = list;
+    int position = 1;
+
+    while(cur != NULL)
+    {
+        if(cur->data == value)
+        {
+            cout << "Value found at position " << position << endl;
+            return;
+        }
+
+        cur = cur->next;
+        position++;
+    }
+
+    cout << "Value not found" << endl;
+}
+ int main()
+ { while (true)
+ {
+     int choice,value;
+     cout<<"enter choice"<<endl;
+     cout<<"1-INSERT"<<endl;
+     cout<<"2-DISPLAY"<<endl;
+     cout<<"3-DELETE"<<endl;
+     cout<<"4-search"<<endl;
+     cin>>choice;
+     if(choice==1)
+     {
+         cout<<"enter value to insert"<<endl;
+         cin>>value;
+         insert(value);}
+     
+     if (choice==2){
+        display();
+     }
+     if(choice==3)
+     {
+         cout<<"enter value to delete"<<endl;
+         cin>>value;
+         Delete(value);
+     }
+     if(choice==4)
+     {
+         cout<<"enter value to search"<<endl;
+         cin>>value;
+         search(value);
+     }
+ }
+ }
