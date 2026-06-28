@@ -1,0 +1,172 @@
+#include<iostream>
+#include<stdio.h>
+ using namespace std;
+ struct node
+ {
+    int data;
+    node*prev;
+    node*next;
+ };
+    node*list=NULL;
+void insert(int value)
+{
+    node*temp;
+    temp=(node*) malloc(sizeof(node));
+    temp->data=value;
+    temp->next=NULL;
+    temp->prev=NULL;
+    if(list==NULL)
+    {
+        list=temp;
+        return;
+    }
+
+    node*cur=list;
+    while(cur->next!=NULL)
+    {
+        cur=cur->next;
+        //cur->next=temp;
+    }
+   cur->next=temp;
+   temp->prev=cur;
+    }
+ void display()
+ {
+    if(list==NULL)
+    {
+        cout<<"list is empty";
+        return;
+    }
+    node*cur=list;
+    while(cur!=NULL)
+       { cout<<cur->data<<endl;
+        cur=cur->next;}
+ }
+      
+
+     void search(int value)
+{
+    if(list == NULL)
+    {
+        cout << "List is empty" << endl;
+        return;
+    }
+
+    node* cur = list;
+    int position = 1;
+
+    while(cur != NULL)
+    {
+        if(cur->data == value)
+        {
+            cout << "Value found at position " << position << endl;
+            return;
+        }
+
+        cur = cur->next;
+        position++;
+    }
+
+    cout << "Value not found" << endl;
+}
+void reversedisplay()
+{
+    if(list == NULL)
+    {
+        cout << "List is empty\n";
+        return;
+    }
+
+    node* cur = list;
+
+    while(cur->next != NULL)
+    {
+        cur = cur->next;
+    }
+
+    while(cur != NULL)
+    {
+        cout << cur->data << " ";
+        cur = cur->prev;
+    }
+
+    cout << endl;
+}
+void Delete(int value)
+{
+    if(list == NULL)
+    {
+        cout << "List is empty";
+        return;
+    }
+
+    node* cur = list;
+
+    while(cur != NULL)
+    {
+        if(cur->data == value)
+        {
+            // First node
+            if(cur == list)
+            {
+                list = cur->next;
+
+                if(list != NULL)
+                    list->prev = NULL;
+            }
+            else
+            {
+                cur->prev->next = cur->next;
+
+                if(cur->next != NULL)
+                    cur->next->prev = cur->prev;
+            }
+
+            delete cur;
+            cout << "Node deleted";
+            return;
+        }
+
+        cur = cur->next;
+    }
+
+    cout << "Value not found";
+}
+ int main()
+ { while (true)
+ {
+     int choice,value;
+     cout<<"enter choice"<<endl;
+     cout<<"1-INSERT"<<endl;
+     cout<<"2-DISPLAY"<<endl;
+     cout<<"3-DELETE"<<endl;
+     cout<<"4-search"<<endl;
+     cout<<"5-reverse display"<<endl;
+     cin>>choice;
+     if(choice==1)
+     {
+         cout<<"enter value to insert"<<endl;
+         cin>>value;
+         insert(value);}
+     
+     if (choice==2){
+        display();
+     }
+     if(choice==3)
+     {
+         cout<<"enter value to delete"<<endl;
+         cin>>value;
+         Delete(value);
+     }
+     if(choice==4)
+     {
+         cout<<"enter value to search"<<endl;
+         cin>>value;
+         search(value);
+     }
+     if(choice==5)
+     {
+         reversedisplay();
+     }
+ }
+ }
