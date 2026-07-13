@@ -1,0 +1,469 @@
+#include <iostream>
+using namespace std;
+
+const int SIZE = 10;
+
+int adjacencyMatrix[SIZE][SIZE];
+bool visited[SIZE];
+int parent[SIZE];
+int vertices;
+
+void initializeMatrix()
+{
+    for(int i = 0; i < vertices; i++)
+    {
+        visited[i] = false;
+        parent[i] = -1;
+
+        for(int j = 0; j < vertices; j++)
+        {
+            adjacencyMatrix[i][j] = 0;
+        }
+    }
+}
+void addEdge()
+{
+    int source, destination;
+
+    cout << "Enter Source Vertex: ";
+    cin >> source;
+
+    cout << "Enter Destination Vertex: ";
+    cin >> destination;
+
+    if(source >= 0 && source < vertices &&
+       destination >= 0 && destination < vertices)
+    {
+        adjacencyMatrix[source][destination] = 1;
+
+        cout << "Edge Added Successfully.\n";
+    }
+    else
+    {
+        cout << "Invalid Vertices!\n";
+    }
+}
+void removeEdge()
+{
+    int source, destination;
+
+    cout << "Enter Source Vertex: ";
+    cin >> source;
+
+    cout << "Enter Destination Vertex: ";
+    cin >> destination;
+
+    if(source >= 0 && source < vertices &&
+       destination >= 0 && destination < vertices)
+    {
+        if(adjacencyMatrix[source][destination] == 1)
+        {
+            adjacencyMatrix[source][destination] = 0;
+
+            cout << "Edge Removed Successfully.\n";
+        }
+        else
+        {
+            cout << "Edge Does Not Exist.\n";
+        }
+    }
+    else
+    {
+        cout << "Invalid Vertices!\n";
+    }
+}
+void displayMatrix()
+{
+    cout << "\nAdjacency Matrix\n\n";
+
+    cout << "  ";
+
+    for(int i = 0; i < vertices; i++)
+        cout << i << " ";
+
+    cout << endl;
+
+    for(int i = 0; i < vertices; i++)
+    {
+        cout << i << " ";
+
+        for(int j = 0; j < vertices; j++)
+        {
+            cout << adjacencyMatrix[i][j] << " ";
+        }
+
+        cout << endl;
+    }
+}
+void searchVertex()
+{
+    int vertex;
+    bool found = false;
+
+    cout << "Enter Vertex: ";
+    cin >> vertex;
+
+    if(vertex < 0 || vertex >= vertices)
+    {
+        cout << "Vertex Does Not Exist.\n";
+        return;
+    }
+
+    for(int i = 0; i < vertices; i++)
+    {
+        if(adjacencyMatrix[vertex][i] == 1 ||
+           adjacencyMatrix[i][vertex] == 1)
+        {
+            found = true;
+            break;
+        }
+    }
+
+    if(found)
+        cout << "Vertex Found.\n";
+    else
+        cout << "Vertex Exists But Has No Edge.\n";
+}
+void resetVisited()
+{
+    for(int i = 0; i < vertices; i++)
+    {
+        visited[i] = false;
+    }
+}
+void DFS(int vertex)
+{
+    visited[vertex] = true;
+    cout << vertex << " ";
+
+    for(int i = 0; i < vertices; i++)
+    {
+        if(adjacencyMatrix[vertex][i] == 1 && !visited[i])
+        {
+            DFS(i);
+        }
+    }
+}
+void BFS(int start)
+{
+    int queue[10];
+    int front = 0;
+    int rear = 0;
+
+    resetVisited();
+
+    queue[rear++] = start;
+    visited[start] = true;
+
+    while(front < rear)
+    {
+        int current = queue[front++];
+        cout << current << " ";
+
+        for(int i = 0; i < vertices; i++)
+        {
+            if(adjacencyMatrix[current][i] == 1 && !visited[i])
+            {
+                queue[rear++] = i;
+                visited[i] = true;
+            }
+        }
+    }
+}
+void findInDegree()
+{
+    int vertex;
+    int inDegree = 0;
+
+    cout << "Enter Vertex: ";
+    cin >> vertex;
+
+    if(vertex < 0 || vertex >= vertices)
+    {
+        cout << "Invalid Vertex.\n";
+        return;
+    }
+
+    for(int i = 0; i < vertices; i++)
+    {
+        if(adjacencyMatrix[i][vertex] == 1)
+        {
+            inDegree++;
+        }
+    }
+
+    cout << "In-Degree of Vertex " << vertex
+         << " = " << inDegree << endl;
+}
+void findOutDegree()
+{
+    int vertex;
+    int outDegree = 0;
+
+    cout << "Enter Vertex: ";
+    cin >> vertex;
+
+    if(vertex < 0 || vertex >= vertices)
+    {
+        cout << "Invalid Vertex.\n";
+        return;
+    }
+
+    for(int i = 0; i < vertices; i++)
+    {
+        if(adjacencyMatrix[vertex][i] == 1)
+        {
+            outDegree++;
+        }
+    }
+
+    cout << "Out-Degree of Vertex " << vertex
+         << " = " << outDegree << endl;
+}
+void findNeighbors()
+{
+    int vertex;
+
+    cout << "Enter Vertex: ";
+    cin >> vertex;
+
+    if(vertex < 0 || vertex >= vertices)
+    {
+        cout << "Invalid Vertex.\n";
+        return;
+    }
+
+    cout << "Neighbors of Vertex " << vertex << ": ";
+
+    bool found = false;
+
+    for(int i = 0; i < vertices; i++)
+    {
+        if(adjacencyMatrix[vertex][i] == 1)
+        {
+            cout << i << " ";
+            found = true;
+        }
+    }
+
+    if(!found)
+    {
+        cout << "No Neighbors";
+    }
+
+    cout << endl;
+}
+void resetRecursionStack()
+{
+    for(int i = 0; i < vertices; i++)
+    {
+        recursionStack[i] = false;
+    }
+}
+bool findPath(int source, int destination)
+{
+    visited[source] = true;
+
+    if(source == destination)
+        return true;
+
+    for(int i = 0; i < vertices; i++)
+    {
+        if(adjacencyMatrix[source][i] == 1 && !visited[i])
+        {
+            parent[i] = source;
+
+            if(findPath(i, destination))
+                return true;
+        }
+    }
+
+    return false;
+}
+bool isCyclic(int vertex)
+{
+    visited[vertex] = true;
+    recursionStack[vertex] = true;
+
+    for(int i = 0; i < vertices; i++)
+    {
+        if(adjacencyMatrix[vertex][i] == 1)
+        {
+            if(!visited[i])
+            {
+                if(isCyclic(i))
+                    return true;
+            }
+            else if(recursionStack[i])
+            {
+                return true;
+            }
+        }
+    }
+
+    recursionStack[vertex] = false;
+
+    return false;
+}
+int main()
+{
+    int choice;
+    int startVertex;
+    int source, destination;
+
+    cout << "Enter Number of Vertices (Maximum 10): ";
+    cin >> vertices;
+
+    initializeMatrix();
+
+    do
+    {
+        cout << "\n----------- MENU -----------\n";
+        cout << "1. Add Edge\n";
+        cout << "2. Remove Edge\n";
+        cout << "3. Display Matrix\n";
+        cout << "4. DFS Traversal\n";
+        cout << "5. BFS Traversal\n";
+        cout << "6. Search Vertex\n";
+        cout << "7. Find In-Degree\n";
+        cout << "8. Find Out-Degree\n";
+        cout << "9. Find Neighbors\n";
+        cout << "10. Find Path\n";
+        cout << "11. Check Cyclic / Acyclic\n";
+        cout << "12. Exit\n";
+
+        cout << "\nEnter Choice: ";
+        cin >> choice;
+
+        switch(choice)
+        {
+            case 1:
+                addEdge();
+                break;
+
+            case 2:
+                removeEdge();
+                break;
+
+            case 3:
+                displayMatrix();
+                break;
+
+            case 4:
+                resetVisited();
+
+                cout << "Enter Starting Vertex: ";
+                cin >> startVertex;
+
+                cout << "DFS Traversal: ";
+                DFS(startVertex);
+                cout << endl;
+                break;
+
+            case 5:
+                cout << "Enter Starting Vertex: ";
+                cin >> startVertex;
+
+                cout << "BFS Traversal: ";
+                BFS(startVertex);
+                cout << endl;
+                break;
+
+            case 6:
+                searchVertex();
+                break;
+
+            case 7:
+                findInDegree();
+                break;
+
+            case 8:
+                findOutDegree();
+                break;
+
+            case 9:
+                findNeighbors();
+                break;
+
+            case 10:
+
+                resetVisited();
+
+                for(int i = 0; i < vertices; i++)
+                {
+                    parent[i] = -1;
+                }
+
+                cout << "Enter Source Vertex: ";
+                cin >> source;
+
+                cout << "Enter Destination Vertex: ";
+                cin >> destination;
+
+                if(findPath(source, destination))
+                {
+                    int path[10];
+                    int length = 0;
+
+                    int current = destination;
+
+                    while(current != -1)
+                    {
+                        path[length++] = current;
+                        current = parent[current];
+                    }
+
+                    cout << "Path: ";
+
+                    for(int i = length - 1; i >= 0; i--)
+                    {
+                        cout << path[i] << " ";
+                    }
+
+                    cout << endl;
+                }
+                else
+                {
+                    cout << "No Path Found.\n";
+                }
+
+                break;
+
+            case 11:
+
+                resetVisited();
+                resetRecursionStack();
+
+                bool cycle = false;
+
+                for(int i = 0; i < vertices; i++)
+                {
+                    if(!visited[i])
+                    {
+                        if(isCyclic(i))
+                        {
+                            cycle = true;
+                            break;
+                        }
+                    }
+                }
+
+                if(cycle)
+                    cout << "Graph is Cyclic.\n";
+                else
+                    cout << "Graph is Acyclic.\n";
+
+                break;
+
+            case 12:
+                cout << "Program Ended.\n";
+                break;
+
+            default:
+                cout << "Invalid Choice.\n";
+        }
+
+    } while(choice != 12);
+
+    return 0;
+}
