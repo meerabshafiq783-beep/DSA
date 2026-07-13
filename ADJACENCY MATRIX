@@ -1,0 +1,84 @@
+#include <iostream>
+using namespace std;
+void createAdjacencyMatrix(int adjacencyMatrix[][10], int vertices)
+{
+    int edges, source, destination;
+
+    for (int i = 0; i < vertices; i++)
+    {
+        for (int j = 0; j < vertices; j++)
+        {
+            adjacencyMatrix[i][j] = 0;
+        }
+    }
+
+    cout << "Enter the number of edges: ";
+    cin >> edges;
+
+    cout << "\nEnter the edges (Source Destination):\n";
+
+    for (int i = 0; i < edges; i++)
+    {
+        cout << "Edge " << i + 1 << ": ";
+        cin >> source >> destination;
+
+        if (source >= 0 && source < vertices &&
+            destination >= 0 && destination < vertices)
+        {
+            // Directed Graph
+            adjacencyMatrix[source][destination] = 1;
+
+            // For Undirected Graph, uncomment the next line
+            // adjacencyMatrix[destination][source] = 1;
+        }
+        else
+        {
+            cout << "Invalid vertices! Please enter again.\n";
+            i--;
+        }
+    }
+}
+
+void displayAdjacencyMatrix(int adjacencyMatrix[][10], int vertices)
+{
+    cout << "\nAdjacency Matrix:\n\n";
+
+    cout << "   ";
+    for (int i = 0; i < vertices; i++)
+    {
+        cout << i << " ";
+    }
+    cout << endl;
+
+    for (int i = 0; i < vertices; i++)
+    {
+        cout << i << "  ";
+
+        for (int j = 0; j < vertices; j++)
+        {
+            cout << adjacencyMatrix[i][j] << " ";
+        }
+
+        cout << endl;
+    }
+}
+
+int main()
+{
+    int vertices;
+    int adjacencyMatrix[10][10];
+
+    cout << "Enter the number of vertices (Maximum 10): ";
+    cin >> vertices;
+
+    if (vertices > 10 || vertices <= 0)
+    {
+        cout << "Invalid number of vertices!";
+        return 0;
+    }
+
+    createAdjacencyMatrix(adjacencyMatrix, vertices);
+    displayAdjacencyMatrix(adjacencyMatrix, vertices);
+
+    return 0;
+}
