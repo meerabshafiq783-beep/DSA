@@ -1,0 +1,69 @@
+#include <iostream>
+using namespace std;
+
+struct Node
+{
+    int vertex;
+    Node* next;
+};
+
+Node* createNode(int vertex)
+{
+    Node* temp = new Node;
+    temp->vertex = vertex;
+    temp->next = NULL;
+
+    return temp;
+}
+
+void addEdge(Node* adjacencyList[], int source, int destination)
+{
+    Node* temp = createNode(destination);
+    temp->next = adjacencyList[source];
+    adjacencyList[source] = temp;
+
+    temp = createNode(source);
+    temp->next = adjacencyList[destination];
+    adjacencyList[destination] = temp;
+}
+
+void displayAdjacencyList(Node* adjacencyList[], int vertices)
+{
+    cout << "\nAdjacency List:\n";
+
+    for (int i = 0; i < vertices; i++)
+    {
+        cout << i << " -> ";
+
+        Node* temp = adjacencyList[i];
+
+        while (temp != NULL)
+        {
+            cout << temp->vertex << " -> ";
+            temp = temp->next;
+        }
+
+        cout << "NULL" << endl;
+    }
+}
+
+int main()
+{
+    int vertices = 4;
+
+    Node* adjacencyList[10];
+
+    for (int i = 0; i < vertices; i++)
+    {
+        adjacencyList[i] = NULL;
+    }
+
+    addEdge(adjacencyList, 0, 1);
+    addEdge(adjacencyList, 0, 2);
+    addEdge(adjacencyList, 1, 2);
+    addEdge(adjacencyList, 2, 3);
+
+    displayAdjacencyList(adjacencyList, vertices);
+
+    return 0;
+}
