@@ -1,0 +1,170 @@
+#include <iostream>
+using namespace std;
+
+const int SIZE = 10;
+
+int heap[SIZE];
+int heapSize = 0;
+
+void upHeapify(int index)
+{
+    if(index == 0)
+        return;
+
+    int parent = (index - 1) / 2;
+
+    if(heap[index] < heap[parent])
+    {
+        swap(heap[index], heap[parent]);
+        upHeapify(parent);
+    }
+}
+
+void downHeapify(int index)
+{
+    int left = 2 * index + 1;
+    int right = 2 * index + 2;
+    int smallest = index;
+
+    if(left < heapSize && heap[left] < heap[smallest])
+    {
+        smallest = left;
+    }
+
+    if(right < heapSize && heap[right] < heap[smallest])
+    {
+        smallest = right;
+    }
+
+    if(smallest != index)
+    {
+        swap(heap[index], heap[smallest]);
+        downHeapify(smallest);
+    }
+}
+
+void insert()
+{
+    if(heapSize == SIZE)
+    {
+        cout << "Heap is Full.\n";
+        return;
+    }
+
+    int value;
+
+    cout << "Enter Value: ";
+    cin >> value;
+
+    heap[heapSize] = value;
+
+    upHeapify(heapSize);
+
+    heapSize++;
+
+    cout << "Element Inserted Successfully.\n";
+}
+
+void deleteRoot()
+{
+    if(heapSize == 0)
+    {
+        cout << "Heap is Empty.\n";
+        return;
+    }
+
+    heap[0] = heap[heapSize - 1];
+
+    heapSize--;
+
+    downHeapify(0);
+
+    cout << "Root Deleted Successfully.\n";
+}
+
+void displayHeap()
+{
+    if(heapSize == 0)
+    {
+        cout << "Heap is Empty.\n";
+        return;
+    }
+
+    cout << "\nHeap Elements: ";
+
+    for(int i = 0; i < heapSize; i++)
+    {
+        cout << heap[i] << " ";
+    }
+
+    cout << endl;
+}
+void heapSort()
+{
+    if(heapSize == 0)
+    {
+        cout << "Heap is Empty.\n";
+        return;
+    }
+
+    cout << "Sorted Elements (Ascending): ";
+
+    while(heapSize > 0)
+    {
+        cout << heap[0] << " ";
+
+        heap[0] = heap[heapSize - 1];
+
+        heapSize--;
+
+        downHeapify(0);
+    }
+
+    cout << endl;
+}
+
+int main()
+{
+    int choice;
+
+    do
+    {
+        cout << "\n====== MIN HEAP MENU ======\n";
+        cout << "1. Insert\n";
+        cout << "2. Delete Root\n";
+        cout << "3. Display Heap\n";
+        cout << "4. Heap Sort\n";
+        cout << "5. Exit\n";
+        cout << "Enter Choice: ";
+        cin >> choice;
+
+        switch(choice)
+        {
+            case 1:
+                insert();
+                break;
+
+            case 2:
+                deleteRoot();
+                break;
+
+            case 3:
+                displayHeap();
+                break;
+
+            case 4:
+                heapSort();
+                break;
+
+            case 5:
+                cout << "Program Ended.\n";
+                break;
+
+            default:
+                cout << "Invalid Choice.\n";
+        }
+
+    } while(choice != 5);
+
+    return 0;
+}
