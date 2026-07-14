@@ -1,0 +1,120 @@
+#include <iostream>
+using namespace std;
+
+const int SIZE = 10;
+
+int heap[SIZE];
+int heapSize = 0;
+void upHeapify(int index)
+{
+    if(index == 0)
+        return;
+
+    int parent = (index - 1) / 2;
+
+    if(heap[index] > heap[parent])
+    {
+        swap(heap[index], heap[parent]);
+        upHeapify(parent);
+    }
+}
+void downHeapify(int index)
+{
+    int left = 2 * index + 1;
+    int right = 2 * index + 2;
+    int largest = index;
+
+    if(left < heapSize && heap[left] > heap[largest])
+    {
+        largest = left;
+    }
+
+    if(right < heapSize && heap[right] > heap[largest])
+    {
+        largest = right;
+    }
+
+    if(largest != index)
+    {
+        swap(heap[index], heap[largest]);
+        downHeapify(largest);
+    }
+}
+void insert()
+{
+    if(heapSize == SIZE)
+    {
+        cout << "Heap is Full.\n";
+        return;
+    }
+
+    int value;
+
+    cout << "Enter Value: ";
+    cin >> value;
+
+    heap[heapSize] = value;
+
+    upHeapify(heapSize);
+
+    heapSize++;
+
+    cout << "Element Inserted Successfully.\n";
+}
+void deleteRoot()
+{
+    if(heapSize == 0)
+    {
+        cout << "Heap is Empty.\n";
+        return;
+    }
+
+    heap[0] = heap[heapSize - 1];
+
+    heapSize--;
+
+    downHeapify(0);
+
+    cout << "Root Deleted Successfully.\n";
+}
+void displayHeap()
+{
+    if(heapSize == 0)
+    {
+        cout << "Heap is Empty.\n";
+        return;
+    }
+
+    cout << "\nHeap Elements: ";
+
+    for(int i = 0; i < heapSize; i++)
+    {
+        cout << heap[i] << " ";
+    }
+
+    cout << endl;
+}
+// Heap Sort
+void heapSort()
+{
+    if(heapSize == 0)
+    {
+        cout << "Heap is Empty.\n";
+        return;
+    }
+
+    cout << "Sorted Elements (Descending): ";
+
+    while(heapSize > 0)
+    {
+        cout << heap[0] << " ";
+
+        heap[0] = heap[heapSize - 1];
+
+        heapSize--;
+
+        downHeapify(0);
+    }
+
+    cout << endl;
+}
